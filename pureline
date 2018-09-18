@@ -294,6 +294,26 @@ function battery_module {
 	__last_color=$bg_color
 }
 
+# -----------------------------------------------------------------------------
+# append to prompt: indicator for kubernetes context and namespace
+# inspired by https://github.com/jonmosco/kube-ps1
+# arg: $1 foreground color
+# arg; $2 background color
+function kubernetes_module {
+	local bg_color=$1
+	local fg_color=$2
+	local content
+        local k8s_symbol='⎈'
+
+        local k8s_cluster_ns="$(kubectl config view --minify -o=jsonpath='{$.contexts[0].context.cluster}|{$.contexts[0].context.namespace}' 2> /dev/null)"
+
+        content="${k8s_symbol:-k8s} "
+	content+="${k8s_cluster_ns:-N/A|N/A}"
+
+	PS1+=$(section_end $fg_color $bg_color)
+	PS1+=$(section_content $fg_color $bg_color " $content ")
+	__last_color=$bg_color
+}
 
 # -----------------------------------------------------------------------------
 # append to prompt: append a '$' prompt with optional return code for previous command
