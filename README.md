@@ -1,4 +1,3 @@
-
 PureLine - A Pure Bash Powerline PS1 Command Prompt
 ===================================================
 
